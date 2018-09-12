@@ -10,8 +10,9 @@ public class ParseLevel : MonoBehaviour {
 
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
+	public GameObject pellet;
 
-
+	public int[,] levelArray = new int[28,32];
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +32,8 @@ public class ParseLevel : MonoBehaviour {
                 {
                     case 'E':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), edge);
-                        if (level.text[y * length + x + 1] == '1')
+						levelArray[x / 2, (height - y)] = 0;
+						if (level.text[y * length + x + 1] == '1')
                         {
                             rotation = 270;
                         }
@@ -53,7 +55,8 @@ public class ParseLevel : MonoBehaviour {
 
                     case 'C':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), corner);
-                        if (level.text[y * length + x + 1] == '1')
+						levelArray[x / 2, (height - y)] = 0;
+						if (level.text[y * length + x + 1] == '1')
                         {
                             rotation = 270;
                         }
@@ -75,7 +78,8 @@ public class ParseLevel : MonoBehaviour {
 
                     case 'R':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), endright);
-                        if (level.text[y * length + x + 1] == '1')
+						levelArray[x / 2, (height - y)] = 0;
+						if (level.text[y * length + x + 1] == '1')
                         {
                             rotation = 270;
                         }
@@ -97,7 +101,8 @@ public class ParseLevel : MonoBehaviour {
 
                     case 'L':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), endleft);
-                        if (level.text[y * length + x + 1] == '1')
+						levelArray[x / 2, (height - y)] = 0;
+						if (level.text[y * length + x + 1] == '1')
                         {
                             rotation = 270;
                         }
@@ -119,20 +124,26 @@ public class ParseLevel : MonoBehaviour {
 
                     case 'D':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), door);
-                        break;
+						levelArray[x / 2, (height - y)] = 2;
+						break;
 
                     case 'W':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), wall);
-                        break;
-                        
-                    default:
+						levelArray[x / 2, (height - y)] = 0;
+						break;
+
+					case '.':
+						GameObject.Instantiate(pellet, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+						levelArray[x / 2, (height - y)] = 1;
+						break;
+
+					default:
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), floor);
-                        break;
+						levelArray[x / 2, (height - y)] = 1;
+						break;
 
                 }
             }
         }
     }
-
-	
 }
