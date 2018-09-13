@@ -10,14 +10,16 @@ public class ParseLevel : MonoBehaviour {
 
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
-	public GameObject pellet;
+	public GameObject pellet,heckman, ghostA, ghostB, ghostC, ghostD;
+    public Score score;
 
 	public int[,] levelArray = new int[28,32];
 
 	// Use this for initialization
 	void Start () {
         LoadLevel();
-	}
+        score = (GameObject.Find("UI")).GetComponent<Score>();
+    }
 
     //To make it uniform we need an extra blank line at the end, or tbh anything wokrs as long as its another character thats in place of the "\n".
 
@@ -137,7 +139,38 @@ public class ParseLevel : MonoBehaviour {
 						levelArray[x / 2, (height - y)] = 1;
 						break;
 
-					default:
+                    case 'P':
+                        GameObject p = GameObject.Instantiate(heckman, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                        p.GetComponent<PacMaster>().pl = this;
+                        p.GetComponent<PacMaster>().scoring = score;
+                        levelArray[x / 2, (height - y)] = 1;
+                        break;
+
+                    case 'G':
+                        GameObject g;
+                        if (level.text[y * length + x + 1] == 'A')
+                        {
+                            g =  GameObject.Instantiate(ghostA, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                        }
+                        else if (level.text[y * length + x + 1] == 'B')
+                        {
+                            g = GameObject.Instantiate(ghostB, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                        }
+                        else if (level.text[y * length + x + 1] == 'C')
+                        {
+                            g = GameObject.Instantiate(ghostC, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                        }
+                        else
+                        {
+                            g = GameObject.Instantiate(ghostD, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                        }
+
+                        g.GetComponent<Ghost>().pl = this;
+
+                        levelArray[x / 2, (height - y)] = 1;
+                        break;
+
+                    default:
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), floor);
 						levelArray[x / 2, (height - y)] = 1;
 						break;

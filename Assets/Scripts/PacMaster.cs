@@ -8,6 +8,7 @@ public class PacMaster : MonoBehaviour
 	public GameObject pacTop;
 	public ParseLevel pl;
 	private bool levelSet = false;
+    public Score scoring;
 	private int[,] levelRef;
 	private Vector3 goal;
 	private Vector3 invGoal;
@@ -176,11 +177,13 @@ public class PacMaster : MonoBehaviour
 	{
 		if (collision.tag == "Pellet")
 		{
+            scoring.AddScore();
 			Destroy(collision.gameObject);
 		}
 		if (collision.tag == "Death")
 		{
 			Destroy(gameObject);
+            scoring.EndGame();
 		}
 	}
 }
