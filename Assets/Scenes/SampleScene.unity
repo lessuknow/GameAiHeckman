@@ -1032,3 +1032,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curScoreTxt: {fileID: 1074536937}
   maxScoreTxt: {fileID: 1670863344}
+  curScore: {fileID: 1757671247}
+  maxScore: {fileID: 133422496}
+  butn: {fileID: 607116151}

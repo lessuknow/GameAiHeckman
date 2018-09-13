@@ -8,6 +8,8 @@ public class Score : MonoBehaviour {
 
     int score = 0;
     public Text curScoreTxt, maxScoreTxt;
+    public Text curScore, maxScore;
+    public Button butn;
 
     public void Start()
     {
@@ -20,8 +22,17 @@ public class Score : MonoBehaviour {
 
         maxScoreTxt.text += tmp;
 
+        PositionText();
+
     }
 
+    private void PositionText()
+    {
+        curScore.transform.position = new Vector3(curScore.preferredWidth / 2 + 10, Screen.height - curScore.preferredHeight);
+        maxScore.transform.position = new Vector3(Screen.width - maxScore.preferredWidth / 2 - 10, curScore.transform.position.y);
+        butn.transform.position = new Vector3(butn.GetComponent<RectTransform>().rect.width / 2,
+            butn.GetComponent<RectTransform>().rect.height / 2);
+    }
 
     private void Update()
     {
