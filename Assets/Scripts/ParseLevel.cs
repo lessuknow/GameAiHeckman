@@ -101,6 +101,29 @@ public class ParseLevel : MonoBehaviour {
                         }
                         break;
 
+                    case 'N':
+                        tm.SetTile(new Vector3Int(x / 2, (height - y), 0), end);
+                        levelArray[x / 2, (height - y)] = 0;
+                        if (level.text[y * length + x + 1] == '1')
+                        {
+                            rotation = 270;
+                        }
+                        else if (level.text[y * length + x + 1] == '2')
+                        {
+                            rotation = 180;
+                        }
+                        else if (level.text[y * length + x + 1] == '3')
+                        {
+                            rotation = 90;
+                        }
+
+                        if (rotation != 0)
+                        {
+                            Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0f, 0f, rotation), Vector3.one);
+                            tm.SetTransformMatrix(new Vector3Int(x / 2, (height - y), 0), matrix);
+                        }
+                        break;
+
                     case 'L':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), endleft);
 						levelArray[x / 2, (height - y)] = 0;
