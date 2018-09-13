@@ -53,7 +53,7 @@ public class Score : MonoBehaviour {
 
     public void AddScore()
     {
-        score += 10;
+        score += 1;
     }
 
 }
