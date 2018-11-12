@@ -14,6 +14,11 @@ public class Score : MonoBehaviour {
     public void Start()
     {
         string tmp = ApplicationData.HighScore.ToString();
+        if(!ApplicationData.loaded)
+        {
+            ApplicationData.loaded = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
         maxScoreTxt.text = "";
         for (int i = 0; i < (4 - tmp.Length); i++)
         {
