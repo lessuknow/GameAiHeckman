@@ -89,15 +89,6 @@ public class PacMaster : MonoBehaviour
 						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + 1.5f, 0);
 						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
 					}
-					else
-					{
-						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) - .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-						dir = 2;
-						pacTop.transform.localPosition = new Vector3(0, 0, -5);
-						pacSide.transform.localPosition = new Vector3(0, 0, 5);
-						pacTop.transform.localScale = new Vector3(-1, 1, 1);
-					}
 				}
 				else if (dir == 1)
 				{
@@ -112,15 +103,6 @@ public class PacMaster : MonoBehaviour
 
 						goal = new Vector3((int)(transform.position.x) + 1.5f, (int)(transform.position.y) + .5f, 0);
 						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-					}
-					else
-					{
-						goal = new Vector3((int)(transform.position.x) - .5f, (int)(transform.position.y) + .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-						dir = 3;
-						pacSide.transform.localPosition = new Vector3(0, 0, -5);
-						pacTop.transform.localPosition = new Vector3(0, 0, 5);
-						pacSide.transform.localScale = new Vector3(-1, 1, 1);
 					}
 				}
 				else if (dir == 2)
@@ -137,15 +119,6 @@ public class PacMaster : MonoBehaviour
 						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) - .5f, 0);
 						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
 					}
-					else
-					{
-						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + 1.5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-						dir = 0;
-						pacTop.transform.localPosition = new Vector3(0, 0, -5);
-						pacSide.transform.localPosition = new Vector3(0, 0, 5);
-						pacTop.transform.localScale = new Vector3(1, 1, 1);
-					}
 				}
 				else
 				{
@@ -161,22 +134,11 @@ public class PacMaster : MonoBehaviour
 						goal = new Vector3((int)(transform.position.x) - .5f, (int)(transform.position.y) + .5f, 0);
 						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
 					}
-					else
-					{
-						goal = new Vector3((int)(transform.position.x) + 1.5f, (int)(transform.position.y) + .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-						dir = 1;
-						pacSide.transform.localPosition = new Vector3(0, 0, -5);
-						pacTop.transform.localPosition = new Vector3(0, 0, 5);
-						pacSide.transform.localScale = new Vector3(1, 1, 1);
-					}
 				}
 			}
 		}
 		else
 			transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * 10, (goal.y - invGoal.y) * Time.deltaTime * 10, 0);
-
-		
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)

@@ -10,7 +10,7 @@ public class ParseLevel : MonoBehaviour {
 
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
-	public GameObject pellet,heckman, ghostA, ghostB, ghostC, ghostD;
+	public GameObject superPellet, pellet,heckman, ghostA, ghostB, ghostC, ghostD;
     public Score score;
 
 	public int[,] levelArray = new int[28,32];
@@ -162,7 +162,12 @@ public class ParseLevel : MonoBehaviour {
 						levelArray[x / 2, (height - y)] = 1;
 						break;
 
-                    case 'P':
+					case 'S':
+						GameObject.Instantiate(superPellet, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+						levelArray[x / 2, (height - y)] = 1;
+						break;
+
+					case 'P':
                         GameObject p = GameObject.Instantiate(heckman, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
                         p.GetComponent<PacMaster>().pl = this;
                         p.GetComponent<PacMaster>().scoring = score;

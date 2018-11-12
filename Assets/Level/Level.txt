@@ -1,7 +1,7 @@
 C0W W W W W W W W W W W W W W W W W W W W W W W W W W C1
 W . . . . . . . . . . . . W W . . . . . . . . . . . . W 
 W . C0W C1. . . C0W C1. . W W . . C0W C1. . . C0W C1. W 
-W . C3W C2. . . C3W C2. . C3C2. . C3W C2. . . C3W C2. W 
+W S C3W C2. . . C3W C2. . C3C2. . C3W C2. . . C3W C2S W 
 W . . . . . . . . . . . . . . . . . . . . . . . . . . W 
 W . L0E0E0E0E0E0E0E0E0E0R0. . L0E0E0E0E0E0E0E0E0E0R0. W 
 < . . . . . . . . . . . . . . . . . . . . . . . . . . > 
@@ -26,7 +26,7 @@ W . L0E0E0E0E0E0E0E0E0E0R0. . L0E0E0E0E0E0E0E0E0E0R0. W
 < . . . . . . . . . . . . . . . . . . . . . . . . . . > 
 W . R2E2E2E2E2E2E2E2E2E2L2. . R2E2E2E2E2E2E2E2E2E2L2. W 
 W . . . . . . . . . . . . . . . . . . . . . . . . . . W 
-W . C0W C1. . . C0W C1. . C0C1. . C0W C1. . . C0W C1. W 
+W S C0W C1. . . C0W C1. . C0C1. . C0W C1. . . C0W C1S W 
 W . C3W C2. . . C3W C2. . W W . . C3W C2. . . C3W C2. W 
 W . . . . . . . . . . . . W W . . . . . . . . . . . . W 
 C3W W W W W W W W W W W W W W W W W W W W W W W W W W C2
