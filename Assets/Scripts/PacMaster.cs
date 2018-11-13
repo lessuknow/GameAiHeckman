@@ -14,7 +14,7 @@ public class PacMaster : MonoBehaviour
 	private Vector3 invGoal;
 	private int dir = 1;
 	private float t = 0;
-	public float speed = .2f;
+	public float speed = .12f;
 
 	void Start ()
 	{
@@ -30,7 +30,6 @@ public class PacMaster : MonoBehaviour
 			invGoal = transform.position;
 			goal = new Vector3(transform.position.x + 1, transform.position.y, 0);
 		}
-        print("OOF");
 		t += Time.deltaTime;
 		if (Mathf.Abs(goal.x - transform.position.x) < .1f && Mathf.Abs(goal.y - transform.position.y) < .1f)
 		{
@@ -138,7 +137,7 @@ public class PacMaster : MonoBehaviour
 			}
 		}
 		else
-			transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * 10, (goal.y - invGoal.y) * Time.deltaTime * 10, 0);
+			transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * speed, (goal.y - invGoal.y) * Time.deltaTime * speed, 0);
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
