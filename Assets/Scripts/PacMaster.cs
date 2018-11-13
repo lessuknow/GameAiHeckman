@@ -23,6 +23,8 @@ public class PacMaster : MonoBehaviour
 
 	void Update()
 	{
+		bool nearGoal = false;
+
 		if (!levelSet)
 		{
 			levelSet = true;
@@ -30,114 +32,164 @@ public class PacMaster : MonoBehaviour
 			invGoal = transform.position;
 			goal = new Vector3(transform.position.x + 1, transform.position.y, 0);
 		}
-		t += Time.deltaTime;
+
 		if (Mathf.Abs(goal.x - transform.position.x) < .1f && Mathf.Abs(goal.y - transform.position.y) < .1f)
+			nearGoal = true;
+
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
 		{
-			transform.position = goal;
-			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+			if (dir == 2)
 			{
-				if (!((int)(transform.position.y - .5f) + 1 > 31) && ((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-					levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) + 1] == 1))
-				{
-					dir = 0;
-					t = 0;
-				}
+				dir = 0;
+				Vector3 temp = goal;
+				goal = invGoal;
+				invGoal = temp;
+				pacTop.transform.localPosition = new Vector3(0, 0, -5);
+				pacSide.transform.localPosition = new Vector3(0, 0, 5);
+				pacTop.transform.localScale = new Vector3(1, 1, 1);
 			}
-			else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+			else if (!((int)(goal.y - .5f) + 1 > 31) && ((goal.y - .5f) % 1f == 0 && (goal.x - .5f) % 1f == 0 &&
+				levelRef[(int)(goal.x - .5f), (int)(goal.y - .5f) + 1] == 1) && nearGoal)
 			{
-				if (!((int)(transform.position.x - .5f) + 1 > 27) && ((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-					levelRef[(int)(transform.position.x - .5f) + 1, (int)(transform.position.y - .5f)] == 1))
-				{
-					dir = 1;
-					t = 0;
-				}
-			}
-			else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-			{
-				if (!((int)(transform.position.y - .5f) - 1 < 0) && ((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-					levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) - 1] == 1))
-				{
-					dir = 2;
-					t = 0;
-				}
-			}
-			else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-			{
-				if (!((int)(transform.position.x - .5f) - 1 < 0) && ((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-					levelRef[(int)(transform.position.x - .5f) - 1, (int)(transform.position.y - .5f)] == 1))
-				{
-					dir = 3;
-					t = 0;
-				}
-			}
-
-			if (transform.position == goal || t == 0)
-			{
-				t = 0;
-
-				if (dir == 0)
-				{
-					if ((int)(transform.position.y - .5f) + 1 > 31 && (transform.position.y - .5f) % 1f == 0)
-						transform.position = new Vector3(transform.position.x, 0.5f, 0);
-					if (levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) + 1] == 1)
-					{
-						pacTop.transform.localPosition = new Vector3(0, 0, -5);
-						pacSide.transform.localPosition = new Vector3(0, 0, 5);
-						pacTop.transform.localScale = new Vector3(1, 1, 1);
-
-						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + 1.5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-					}
-				}
-				else if (dir == 1)
-				{
-					if ((int)(transform.position.x - .5f) + 1 > 27 && (transform.position.x - .5f) % 1f == 0)
-						transform.position = new Vector3(0.5f, transform.position.y, 0);
-
-					if (levelRef[(int)(transform.position.x - .5f) + 1, (int)(transform.position.y - .5f)] == 1)
-					{
-						pacSide.transform.localPosition = new Vector3(0, 0, -5);
-						pacTop.transform.localPosition = new Vector3(0, 0, 5);
-						pacSide.transform.localScale = new Vector3(1, 1, 1);
-
-						goal = new Vector3((int)(transform.position.x) + 1.5f, (int)(transform.position.y) + .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-					}
-				}
-				else if (dir == 2)
-				{
-					if ((int)(transform.position.y - .5f) - 1 < 0 && (transform.position.y - .5f) % 1f == 0)
-						transform.position = new Vector3(transform.position.x, 31.5f, 0);
-
-					if (levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) - 1] == 1)
-					{
-						pacTop.transform.localPosition = new Vector3(0, 0, -5);
-						pacSide.transform.localPosition = new Vector3(0, 0, 5);
-						pacTop.transform.localScale = new Vector3(-1, 1, 1);
-
-						goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) - .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-					}
-				}
-				else
-				{
-					if ((int)(transform.position.x - .5f) - 1 < 0 && (transform.position.x - .5f) % 1f == 0)
-						transform.position = new Vector3(27.5f, transform.position.y, 0);
-
-					if (levelRef[(int)(transform.position.x - .5f) - 1, (int)(transform.position.y - .5f)] == 1)
-					{
-						pacSide.transform.localPosition = new Vector3(0, 0, -5);
-						pacTop.transform.localPosition = new Vector3(0, 0, 5);
-						pacSide.transform.localScale = new Vector3(-1, 1, 1);
-
-						goal = new Vector3((int)(transform.position.x) - .5f, (int)(transform.position.y) + .5f, 0);
-						invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, 0);
-					}
-				}
+				if (dir != 0)
+					transform.position = goal;
+				dir = 0;
 			}
 		}
-		else
-			transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * speed, (goal.y - invGoal.y) * Time.deltaTime * speed, 0);
+		else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+		{
+			if (dir == 3)
+			{
+				dir = 1;
+				Vector3 temp = goal;
+				goal = invGoal;
+				invGoal = temp;
+				pacSide.transform.localPosition = new Vector3(0, 0, -5);
+				pacTop.transform.localPosition = new Vector3(0, 0, 5);
+				pacSide.transform.localScale = new Vector3(1, 1, 1);
+			}
+			else if (!((int)(goal.x - .5f) + 1 > 27) && ((goal.y - .5f) % 1f == 0 && (goal.x - .5f) % 1f == 0 &&
+				levelRef[(int)(goal.x - .5f) + 1, (int)(goal.y - .5f)] == 1) && nearGoal)
+			{
+				if (dir != 1)
+					transform.position = goal;
+				dir = 1;
+			}
+		}
+		else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+		{
+			if (dir == 0)
+			{
+				dir = 2;
+				Vector3 temp = goal;
+				goal = invGoal;
+				invGoal = temp;
+				pacTop.transform.localPosition = new Vector3(0, 0, -5);
+				pacSide.transform.localPosition = new Vector3(0, 0, 5);
+				pacTop.transform.localScale = new Vector3(-1, 1, 1);
+			}
+			else if (!((int)(goal.y - .5f) - 1 < 0) && ((goal.y - .5f) % 1f == 0 && (goal.x - .5f) % 1f == 0 &&
+				levelRef[(int)(goal.x - .5f), (int)(goal.y - .5f) - 1] == 1) && nearGoal)
+			{
+				if (dir != 2)
+					transform.position = goal;
+				dir = 2;
+			}
+		}
+		else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+		{
+			if (dir == 1)
+			{
+				dir = 3;
+				Vector3 temp = goal;
+				goal = invGoal;
+				invGoal = temp;
+				pacSide.transform.localPosition = new Vector3(0, 0, -5);
+				pacTop.transform.localPosition = new Vector3(0, 0, 5);
+				pacSide.transform.localScale = new Vector3(-1, 1, 1);
+			}
+			else if (!((int)(goal.x - .5f) - 1 < 0) && ((goal.y - .5f) % 1f == 0 && (goal.x - .5f) % 1f == 0 &&
+				levelRef[(int)(goal.x - .5f) - 1, (int)(goal.y - .5f)] == 1) && nearGoal)
+			{
+				if (dir != 3)
+					transform.position = goal;
+				dir = 3;
+			}
+		}
+
+		if (nearGoal)
+		{
+			if (dir == 0)
+			{
+				if ((int)(goal.y - .5f) + 1 > 31 && (goal.y - .5f) % 1f == 0)
+					goal = new Vector3(goal.x, 0.5f, 0);
+				if (levelRef[(int)(goal.x - .5f), (int)(goal.y - .5f) + 1] == 1)
+				{
+					pacTop.transform.localPosition = new Vector3(0, 0, -5);
+					pacSide.transform.localPosition = new Vector3(0, 0, 5);
+					pacTop.transform.localScale = new Vector3(1, 1, 1);
+
+					invGoal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) + .5f, 0);
+					goal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) + 1.5f, 0);
+				}
+				else
+					invGoal = goal;
+			}
+			else if (dir == 1)
+			{
+				if ((int)(goal.x - .5f) + 1 > 27 && (goal.x - .5f) % 1f == 0)
+					goal = new Vector3(0.5f, goal.y, 0);
+
+				if (levelRef[(int)(goal.x - .5f) + 1, (int)(goal.y - .5f)] == 1)
+				{
+					pacSide.transform.localPosition = new Vector3(0, 0, -5);
+					pacTop.transform.localPosition = new Vector3(0, 0, 5);
+					pacSide.transform.localScale = new Vector3(1, 1, 1);
+
+					invGoal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) + .5f, 0);
+					goal = new Vector3((int)(goal.x) + 1.5f, (int)(goal.y) + .5f, 0);
+				}
+				else
+					invGoal = goal;
+			}
+			else if (dir == 2)
+			{
+				if ((int)(goal.y - .5f) - 1 < 0 && (goal.y - .5f) % 1f == 0)
+					goal = new Vector3(goal.x, 31.5f, 0);
+
+				if (levelRef[(int)(goal.x - .5f), (int)(goal.y - .5f) - 1] == 1)
+				{
+					pacTop.transform.localPosition = new Vector3(0, 0, -5);
+					pacSide.transform.localPosition = new Vector3(0, 0, 5);
+					pacTop.transform.localScale = new Vector3(-1, 1, 1);
+
+					invGoal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) + .5f, 0);
+					goal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) - .5f, 0);
+				}
+				else
+					invGoal = goal;
+			}
+			else
+			{
+				if ((int)(goal.x - .5f) - 1 < 0 && (goal.x - .5f) % 1f == 0)
+					goal = new Vector3(27.5f, goal.y, 0);
+
+				if (levelRef[(int)(goal.x - .5f) - 1, (int)(goal.y - .5f)] == 1)
+				{
+					pacSide.transform.localPosition = new Vector3(0, 0, -5);
+					pacTop.transform.localPosition = new Vector3(0, 0, 5);
+					pacSide.transform.localScale = new Vector3(-1, 1, 1);
+
+					invGoal = new Vector3((int)(goal.x) + .5f, (int)(goal.y) + .5f, 0);
+					goal = new Vector3((int)(goal.x) - .5f, (int)(goal.y) + .5f, 0);
+				}
+				else
+					invGoal = goal;
+			}
+		}
+
+		print(invGoal + ", " + goal);
+		transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * speed, (goal.y - invGoal.y) * Time.deltaTime * speed, 0);
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)

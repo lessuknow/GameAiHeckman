@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ghost : MonoBehaviour
+public class Blinky : MonoBehaviour
 {
 	public ParseLevel pl;
 	private bool levelSet = false;
@@ -18,7 +18,7 @@ public class Ghost : MonoBehaviour
 
 	void Start()
 	{
-		
+
 	}
 
 	void Update()
@@ -156,13 +156,9 @@ public class Ghost : MonoBehaviour
 		if (collision.tag == "Ghost")
 		{
 			if (dir > 1)
-			{
 				dir -= 2;
-			}
 			else
-			{
 				dir += 2;
-			}
 		}
 	}
 }
