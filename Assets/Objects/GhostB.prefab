@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4801791551026504}
   - component: {fileID: 212487339820213226}
-  - component: {fileID: 114048422697024164}
   - component: {fileID: 61366625559802084}
   - component: {fileID: 50065234397827866}
+  - component: {fileID: 114225227113610072}
   m_Layer: 0
   m_Name: GhostB
   m_TagString: Ghost
@@ -143,7 +143,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.1}
   m_EdgeRadius: 0
---- !u!114 &114048422697024164
+--- !u!114 &114225227113610072
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1428867777817012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281acafc69a340d42830e0ee1b3782c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a87504e8f35c92499e729793f0ce539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
@@ -159,6 +159,7 @@ MonoBehaviour:
   ghost1: {fileID: 114894568925395480, guid: c074d9d9ef50b084c8e826a03a33320a, type: 2}
   ghost2: {fileID: 114825972981211348, guid: e7b1a8a5402ae2a4491d7caf254cb892, type: 2}
   ghost3: {fileID: 114694833699973242, guid: 801b7f96470ac3d4db0af747d826fc2e, type: 2}
+  pacman: {fileID: 0}
 --- !u!212 &212487339820213226
 SpriteRenderer:
   m_ObjectHideFlags: 1

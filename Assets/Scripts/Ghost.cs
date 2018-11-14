@@ -18,6 +18,7 @@ public class Ghost : MonoBehaviour
 	public Ghost ghost1;
 	public Ghost ghost2;
 	public Ghost ghost3;
+	public GameObject pacman;
 
 	void Start()
 	{
@@ -25,35 +26,16 @@ public class Ghost : MonoBehaviour
 		nearGhosts.Add(ghost1);
 		nearGhosts.Add(ghost2);
 		nearGhosts.Add(ghost3);
+		pacman = GameObject.FindGameObjectWithTag("Player");
 	}
 
-	void Update()
+	public virtual void Update()
 	{
 		prep();
 
-		rTime += Time.deltaTime;
-
-		if (rTime > rChange || moveGoal == invMoveGoal)
+		if (atGoal())
 		{
-			rDir = Mathf.FloorToInt(Random.value * 4);
-			rTime = 0;
-		}
-
-		if (rDir == 0)
-		{
-			setGoalUp();
-		}
-		else if (rDir == 1)
-		{
-			setGoalRight();
-		}
-		else if (rDir == 2)
-		{
-			setGoalDown();
-		}
-		else if (rDir == 3)
-		{
-			setGoalLeft();
+			pathContinue();
 		}
 
 		move();
@@ -75,9 +57,53 @@ public class Ghost : MonoBehaviour
 		return dir;
 	}
 
-	protected bool centeredOnTile()	//returns true if the ghost is centered on a tile, and thus can change dimension of direction
+	protected bool atGoal()	//returns true if the ghost is centered on goal, and thus can change dimension of direction
 	{
 		return Mathf.Abs(moveGoal.x - transform.position.x) < .1f && Mathf.Abs(moveGoal.y - transform.position.y) < .1f;
+	}
+
+	public bool atCrossroad()   //returns true if a turn can be made
+	{
+		bool up = canMoveUp();
+		bool right = canMoveRight();
+		bool down = canMoveDown();
+		bool left = canMoveLeft();
+
+		int paths = 0;
+		if (up) paths++;
+		if (right) paths++;
+		if (down) paths++;
+		if (left) paths++;
+
+		return paths > 2;
+	}
+
+	protected void pathContinue()
+	{
+		if (dir == 0 && !canMoveUp())
+		{
+			if (!setGoalRight())
+				if (!setGoalLeft())
+					setGoalDown();
+		}
+		else if (dir == 1 && !canMoveRight())
+		{
+			if (!setGoalUp())
+				if (!setGoalDown())
+					setGoalLeft();
+		}
+		else if (dir == 2 && !canMoveDown())
+		{
+			if (!setGoalRight())
+				if (!setGoalLeft())
+					setGoalUp();
+		}
+		else if (dir == 3 && !canMoveLeft())
+		{
+			if (!setGoalDown())
+				if (!setGoalUp())
+					setGoalRight();
+		}
 	}
 
 	//the set goal methods attempt to set the ghost's movement goal to a specified direction, return false if that direction is blocked by a wall (or once implemented, a ghost)
@@ -93,13 +119,23 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && centeredOnTile())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && atGoal())
 		{
 			if (dir != 0)
 				transform.position = moveGoal;
 			dir = 0;
 			return true;
 		}
+		return false;
+	}
+
+	public bool canMoveUp()
+	{
+		if (dir == 2)
+			return true;
+		if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && atGoal())
+			return true;
 		return false;
 	}
 
@@ -114,13 +150,23 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && centeredOnTile())
+			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
 		{
 			if (dir != 1)
 				transform.position = moveGoal;
 			dir = 1;
 			return true;
 		}
+		return false;
+	}
+
+	public bool canMoveRight()
+	{
+		if (dir == 3)
+			return true;
+		if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			return true;
 		return false;
 	}
 
@@ -135,13 +181,23 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && centeredOnTile())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && atGoal())
 		{
 			if (dir != 2)
 				transform.position = moveGoal;
 			dir = 2;
 			return true;
 		}
+		return false;
+	}
+
+	public bool canMoveDown()
+	{
+		if (dir == 0)
+			return true;
+		if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && atGoal())
+			return true;
 		return false;
 	}
 
@@ -156,13 +212,23 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && centeredOnTile())
+			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
 		{
 			if (dir != 3)
 				transform.position = moveGoal;
 			dir = 3;
 			return true;
 		}
+		return false;
+	}
+
+	public bool canMoveLeft()
+	{
+		if (dir == 1)
+			return true;
+		if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			return true;
 		return false;
 	}
 
@@ -216,7 +282,7 @@ public class Ghost : MonoBehaviour
 
 	public void move()	//the movement method of the ghost
 	{
-		if (centeredOnTile())
+		if (atGoal())
 		{
 			if (dir == 0)
 			{
@@ -272,7 +338,5 @@ public class Ghost : MonoBehaviour
 		}
 
 		transform.position += new Vector3((moveGoal.x - invMoveGoal.x) * Time.deltaTime * speed, (moveGoal.y - invMoveGoal.y) * Time.deltaTime * speed, 0);
-
-		ghostCollisions(false);
 	}
 }

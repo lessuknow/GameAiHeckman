@@ -6,14 +6,14 @@ using UnityEngine.Tilemaps;
 public class ParseLevel : MonoBehaviour {
 
     public TextAsset level;
-    static int length = 29 * 2, height = 31;
+    static int length = 29 * 2, height = 29;
 
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
 	public GameObject superPellet, pellet,heckman, ghostA, ghostB, ghostC, ghostD;
     public Score score;
 
-	public int[,] levelArray = new int[28,32];
+	public int[,] levelArray = new int[28,30];
 
 	// Use this for initialization
 	void Start () {
