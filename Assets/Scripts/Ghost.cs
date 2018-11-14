@@ -14,18 +14,12 @@ public class Ghost : MonoBehaviour
 	private float rTime = 0;
 	private float rChange = 2f;
 	private int rDir = 0;
-	protected List<Ghost> nearGhosts;
-	public Ghost ghost1;
-	public Ghost ghost2;
-	public Ghost ghost3;
+	protected GameObject[] ghosts;
 	public GameObject pacman;
 
 	void Start()
 	{
-		nearGhosts = new List<Ghost>();
-		nearGhosts.Add(ghost1);
-		nearGhosts.Add(ghost2);
-		nearGhosts.Add(ghost3);
+		ghosts = GameObject.FindGameObjectsWithTag("Ghost");
 		pacman = GameObject.FindGameObjectWithTag("Player");
 	}
 
@@ -37,6 +31,8 @@ public class Ghost : MonoBehaviour
 		{
 			pathContinue();
 		}
+
+		ghostCollisions();
 
 		move();
 	}
@@ -110,6 +106,12 @@ public class Ghost : MonoBehaviour
 
 	public bool setGoalUp()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.x - transform.position.x) < 1f && ghosts[i].transform.position.y - transform.position.y < 2f && ghosts[i].transform.position.y - transform.position.y > 0)
+				return false;
+		}
+
 		if (dir == 2)
 		{
 			dir = 0;
@@ -126,11 +128,17 @@ public class Ghost : MonoBehaviour
 			dir = 0;
 			return true;
 		}
+
 		return false;
 	}
 
 	public bool canMoveUp()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.x - transform.position.x) < 1f && ghosts[i].transform.position.y - transform.position.y < 2f && ghosts[i].transform.position.y - transform.position.y > 0)
+				return false;
+		}
 		if (dir == 2)
 			return true;
 		if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
@@ -141,6 +149,12 @@ public class Ghost : MonoBehaviour
 
 	public bool setGoalRight()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.y - transform.position.y) < 1f && ghosts[i].transform.position.x - transform.position.x < 2f && ghosts[i].transform.position.x - transform.position.x > 0)
+				return false;
+		}
+
 		if (dir == 3)
 		{
 			dir = 1;
@@ -162,6 +176,11 @@ public class Ghost : MonoBehaviour
 
 	public bool canMoveRight()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.y - transform.position.y) < 1f && ghosts[i].transform.position.x - transform.position.x < 2f && ghosts[i].transform.position.x - transform.position.x > 0)
+				return false;
+		}
 		if (dir == 3)
 			return true;
 		if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
@@ -172,6 +191,12 @@ public class Ghost : MonoBehaviour
 
 	public bool setGoalDown()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.x - transform.position.x) < 1f && ghosts[i].transform.position.y - transform.position.y > -2f && ghosts[i].transform.position.y - transform.position.y < 0)
+				return false;
+		}
+
 		if (dir == 0)
 		{
 			dir = 2;
@@ -193,6 +218,11 @@ public class Ghost : MonoBehaviour
 
 	public bool canMoveDown()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.x - transform.position.x) < 1f && ghosts[i].transform.position.y - transform.position.y > -2f && ghosts[i].transform.position.y - transform.position.y < 0)
+				return false;
+		}
 		if (dir == 0)
 			return true;
 		if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
@@ -203,6 +233,12 @@ public class Ghost : MonoBehaviour
 
 	public bool setGoalLeft()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.y - transform.position.y) < 1f && ghosts[i].transform.position.x - transform.position.x > -2f && ghosts[i].transform.position.x - transform.position.x < 0)
+				return false;
+		}
+
 		if (dir == 1)
 		{
 			dir = 3;
@@ -224,6 +260,11 @@ public class Ghost : MonoBehaviour
 
 	public bool canMoveLeft()
 	{
+		for (int i = 0; i < ghosts.Length; i++)
+		{
+			if (Mathf.Abs(ghosts[i].transform.position.y - transform.position.y) < 1f && ghosts[i].transform.position.x - transform.position.x > -2f && ghosts[i].transform.position.x - transform.position.x < 0)
+				return false;
+		}
 		if (dir == 1)
 			return true;
 		if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
@@ -232,52 +273,60 @@ public class Ghost : MonoBehaviour
 		return false;
 	}
 
-	public void ghostCollisions(bool smart)
+	public void ghostCollisions()
 	{
-		if (nearGhosts.Count == 0)
+		/*if (ghosts.Length == 0)
 			return;
 
-		for (int i = 0; i < nearGhosts.Count; i++)
+		for (int i = 0; i < ghosts.Length; i++)
 		{
-			int nearDir = nearGhosts[i].getDirection();
-			if (dir != nearDir && Vector3.Distance(nearGhosts[i].transform.position, transform.position) <= 2f)
+			int nearDir = ghosts[i].GetComponent<Ghost>().getDirection();
+			if (dir != nearDir && Vector3.Distance(ghosts[i].transform.position, transform.position) <= 3f)
 			{
-				if (!smart)
-					autoAvoid();
+				if (!atGoal())
+				{
+					Vector3 temp = moveGoal;
+					moveGoal = invMoveGoal;
+					invMoveGoal = temp;
+					if (dir > 1)
+						dir -= 2;
+					else
+						dir += 2;
+				}
+				else if (dir == 0)
+				{
+					if (!setGoalDown())
+					{
+						if (!setGoalLeft())
+							setGoalRight();
+					}
+				}
+				else if (dir == 1)
+				{
+					if (!setGoalLeft())
+					{
+						if (!setGoalUp())
+							setGoalDown();
+					}
+				}
+				else if (dir == 2)
+				{
+					if (!setGoalUp())
+					{
+						if (!setGoalLeft())
+							setGoalRight();
+					}
+				}
 				else
-					smartAvoid();
+				{
+					if (!setGoalRight())
+					{
+						if (!setGoalUp())
+							setGoalDown();
+					}
+				}
 			}
-		}
-	}
-
-	private void autoAvoid()	//tries to find any new direction
-	{
-		bool success = setGoalUp();
-		if (success && dir != 0)
-			return;
-		success = setGoalRight();
-		if (success && dir != 1)
-			return;
-		success = setGoalDown();
-		if (success && dir != 2)
-			return;
-		setGoalLeft();
-		return;
-	}
-
-	private void smartAvoid()	//makes use of direction to goal (note implemented yet)
-	{
-		bool success = setGoalUp();
-		if (success)
-			return;
-		success = setGoalRight();
-		if (success)
-			return;
-		success = setGoalDown();
-		if (success)
-			return;
-		setGoalLeft();
-		return;
+		}*/
 	}
 
 	public void move()	//the movement method of the ghost
