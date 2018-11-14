@@ -116,7 +116,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
 --- !u!61 &61111194544200212
 BoxCollider2D:
@@ -155,7 +155,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
-  speed: 0.2
+  speed: 7
+  ghost1: {fileID: 114048422697024164, guid: 8fdaf1b785c83a84298367dd55299d67, type: 2}
+  ghost2: {fileID: 114825972981211348, guid: e7b1a8a5402ae2a4491d7caf254cb892, type: 2}
+  ghost3: {fileID: 114694833699973242, guid: 801b7f96470ac3d4db0af747d826fc2e, type: 2}
 --- !u!212 &212842488593387108
 SpriteRenderer:
   m_ObjectHideFlags: 1

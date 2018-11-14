@@ -5,164 +5,274 @@ using UnityEngine;
 public class Ghost : MonoBehaviour
 {
 	public ParseLevel pl;
-	private bool levelSet = false;
-	private int[,] levelRef;
-	private Vector3 goal;
-	private Vector3 invGoal;
-	private int dir = 1;
-	private float t = 0;
+	protected bool levelSet = false;
+	protected int[,] levelRef;
+	protected Vector3 moveGoal;
+	protected Vector3 invMoveGoal;
+	protected int dir = 1;
 	public float speed = .2f;
 	private float rTime = 0;
-	private float rChange = .3f;
+	private float rChange = 2f;
 	private int rDir = 0;
+	protected List<Ghost> nearGhosts;
+	public Ghost ghost1;
+	public Ghost ghost2;
+	public Ghost ghost3;
 
 	void Start()
 	{
-		
+		nearGhosts = new List<Ghost>();
+		nearGhosts.Add(ghost1);
+		nearGhosts.Add(ghost2);
+		nearGhosts.Add(ghost3);
 	}
 
 	void Update()
+	{
+		prep();
+
+		rTime += Time.deltaTime;
+
+		if (rTime > rChange || moveGoal == invMoveGoal)
+		{
+			rDir = Mathf.FloorToInt(Random.value * 4);
+			rTime = 0;
+		}
+
+		if (rDir == 0)
+		{
+			setGoalUp();
+		}
+		else if (rDir == 1)
+		{
+			setGoalRight();
+		}
+		else if (rDir == 2)
+		{
+			setGoalDown();
+		}
+		else if (rDir == 3)
+		{
+			setGoalLeft();
+		}
+
+		move();
+	}
+
+	protected void prep()
 	{
 		if (!levelSet)
 		{
 			levelSet = true;
 			levelRef = pl.levelArray;
-			invGoal = transform.position;
-			goal = new Vector3(transform.position.x + 1, transform.position.y, -5);
+			invMoveGoal = transform.position;
+			moveGoal = new Vector3(transform.position.x + 1, transform.position.y, -5);
 		}
+	}
 
-		t += Time.deltaTime;
-		rTime += Time.deltaTime;
-		transform.position = Vector3.Lerp(invGoal, goal, t / speed);
+	public int getDirection()
+	{
+		return dir;
+	}
 
-		if (rTime > rChange)
-		{
-			rDir = Mathf.FloorToInt(Random.value * 4);
-		}
+	protected bool centeredOnTile()	//returns true if the ghost is centered on a tile, and thus can change dimension of direction
+	{
+		return Mathf.Abs(moveGoal.x - transform.position.x) < .1f && Mathf.Abs(moveGoal.y - transform.position.y) < .1f;
+	}
 
-		if (rDir == 0)
-		{
-			if (((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-				levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) + 1] >= 1))
-			{
-				dir = 0;
-				t = 0;
-			}
-		}
-		else if (rDir == 1)
-		{
-			if (((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-				levelRef[(int)(transform.position.x - .5f) + 1, (int)(transform.position.y - .5f)] >= 1))
-			{
-				dir = 1;
-				t = 0;
-			}
-		}
-		else if (rDir == 2)
-		{
-			if (((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-				levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) - 1] >= 1))
-			{
-				dir = 2;
-				t = 0;
-			}
-		}
-		else if (rDir == 3)
-		{
-			if (((transform.position.y - .5f) % 1f == 0 && (transform.position.x - .5f) % 1f == 0 &&
-				levelRef[(int)(transform.position.x - .5f) - 1, (int)(transform.position.y - .5f)] >= 1))
-			{
-				dir = 3;
-				t = 0;
-			}
-		}
+	//the set goal methods attempt to set the ghost's movement goal to a specified direction, return false if that direction is blocked by a wall (or once implemented, a ghost)
 
-		if (transform.position == goal || t == 0)
+	public bool setGoalUp()
+	{
+		if (dir == 2)
 		{
-			t = 0;
+			dir = 0;
+			Vector3 temp = moveGoal;
+			moveGoal = invMoveGoal;
+			invMoveGoal = temp;
+			return true;
+		}
+		else if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && centeredOnTile())
+		{
+			if (dir != 0)
+				transform.position = moveGoal;
+			dir = 0;
+			return true;
+		}
+		return false;
+	}
 
-			if (dir == 0)
+	public bool setGoalRight()
+	{
+		if (dir == 3)
+		{
+			dir = 1;
+			Vector3 temp = moveGoal;
+			moveGoal = invMoveGoal;
+			invMoveGoal = temp;
+			return true;
+		}
+		else if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && centeredOnTile())
+		{
+			if (dir != 1)
+				transform.position = moveGoal;
+			dir = 1;
+			return true;
+		}
+		return false;
+	}
+
+	public bool setGoalDown()
+	{
+		if (dir == 0)
+		{
+			dir = 2;
+			Vector3 temp = moveGoal;
+			moveGoal = invMoveGoal;
+			invMoveGoal = temp;
+			return true;
+		}
+		else if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && centeredOnTile())
+		{
+			if (dir != 2)
+				transform.position = moveGoal;
+			dir = 2;
+			return true;
+		}
+		return false;
+	}
+
+	public bool setGoalLeft()
+	{
+		if (dir == 1)
+		{
+			dir = 3;
+			Vector3 temp = moveGoal;
+			moveGoal = invMoveGoal;
+			invMoveGoal = temp;
+			return true;
+		}
+		else if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
+			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && centeredOnTile())
+		{
+			if (dir != 3)
+				transform.position = moveGoal;
+			dir = 3;
+			return true;
+		}
+		return false;
+	}
+
+	public void ghostCollisions(bool smart)
+	{
+		if (nearGhosts.Count == 0)
+			return;
+
+		for (int i = 0; i < nearGhosts.Count; i++)
+		{
+			int nearDir = nearGhosts[i].getDirection();
+			if (dir != nearDir && Vector3.Distance(nearGhosts[i].transform.position, transform.position) <= 2f)
 			{
-				if ((int)(transform.position.y - .5f) + 1 > 31 && (transform.position.y - .5f) % 1f == 0)
-					transform.position = new Vector3(transform.position.x, 0, -5);
-				if (levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) + 1] >= 1)
-				{
-					goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + 1.5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-				}
+				if (!smart)
+					autoAvoid();
 				else
-				{
-					goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) - .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-					dir = 2;
-				}
-			}
-			else if (dir == 1)
-			{
-				if ((int)(transform.position.x - .5f) + 1 > 27 && (transform.position.x - .5f) % 1f == 0)
-					transform.position = new Vector3(0, transform.position.y, -5);
-
-				if (levelRef[(int)(transform.position.x - .5f) + 1, (int)(transform.position.y - .5f)] >= 1)
-				{
-					goal = new Vector3((int)(transform.position.x) + 1.5f, (int)(transform.position.y) + .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-				}
-				else
-				{
-					goal = new Vector3((int)(transform.position.x) - .5f, (int)(transform.position.y) + .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-					dir = 3;
-				}
-			}
-			else if (dir == 2)
-			{
-				if ((int)(transform.position.y - .5f) - 1 < 0 && (transform.position.y - .5f) % 1f == 0)
-					transform.position = new Vector3(transform.position.x, 31, -5);
-
-				if (levelRef[(int)(transform.position.x - .5f), (int)(transform.position.y - .5f) - 1] >= 1)
-				{
-					goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) - .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-				}
-				else
-				{
-					goal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + 1.5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-					dir = 0;
-				}
-			}
-			else
-			{
-				if ((int)(transform.position.x - .5f) - 1 < 0 && (transform.position.x - .5f) % 1f == 0)
-					transform.position = new Vector3(27, transform.position.y, -5);
-
-				if (levelRef[(int)(transform.position.x - .5f) - 1, (int)(transform.position.y - .5f)] >= 1)
-				{
-					goal = new Vector3((int)(transform.position.x) - .5f, (int)(transform.position.y) + .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-				}
-				else
-				{
-					goal = new Vector3((int)(transform.position.x) + 1.5f, (int)(transform.position.y) + .5f, -5);
-					invGoal = new Vector3((int)(transform.position.x) + .5f, (int)(transform.position.y) + .5f, -5);
-					dir = 1;
-				}
+					smartAvoid();
 			}
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collision)
+	private void autoAvoid()	//tries to find any new direction
 	{
-		if (collision.tag == "Ghost")
+		bool success = setGoalUp();
+		if (success && dir != 0)
+			return;
+		success = setGoalRight();
+		if (success && dir != 1)
+			return;
+		success = setGoalDown();
+		if (success && dir != 2)
+			return;
+		setGoalLeft();
+		return;
+	}
+
+	private void smartAvoid()	//makes use of direction to goal (note implemented yet)
+	{
+		bool success = setGoalUp();
+		if (success)
+			return;
+		success = setGoalRight();
+		if (success)
+			return;
+		success = setGoalDown();
+		if (success)
+			return;
+		setGoalLeft();
+		return;
+	}
+
+	public void move()	//the movement method of the ghost
+	{
+		if (centeredOnTile())
 		{
-			if (dir > 1)
+			if (dir == 0)
 			{
-				dir -= 2;
+				if ((int)(moveGoal.y - .5f) + 1 > 31 && (moveGoal.y - .5f) % 1f == 0)
+					moveGoal = new Vector3(moveGoal.x, 0.5f, 0);
+				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1)
+				{
+					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
+					moveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + 1.5f, -5);
+				}
+				else
+					invMoveGoal = moveGoal;
+			}
+			else if (dir == 1)
+			{
+				if ((int)(moveGoal.x - .5f) + 1 > 27 && (moveGoal.x - .5f) % 1f == 0)
+					moveGoal = new Vector3(0.5f, moveGoal.y, 0);
+
+				if (levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1)
+				{
+					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
+					moveGoal = new Vector3((int)(moveGoal.x) + 1.5f, (int)(moveGoal.y) + .5f, -5);
+				}
+				else
+					invMoveGoal = moveGoal;
+			}
+			else if (dir == 2)
+			{
+				if ((int)(moveGoal.y - .5f) - 1 < 0 && (moveGoal.y - .5f) % 1f == 0)
+					moveGoal = new Vector3(moveGoal.x, 31.5f, 0);
+
+				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1)
+				{
+					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
+					moveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) - .5f, -5);
+				}
+				else
+					invMoveGoal = moveGoal;
 			}
 			else
 			{
-				dir += 2;
+				if ((int)(moveGoal.x - .5f) - 1 < 0 && (moveGoal.x - .5f) % 1f == 0)
+					moveGoal = new Vector3(27.5f, moveGoal.y, 0);
+
+				if (levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1)
+				{
+					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
+					moveGoal = new Vector3((int)(moveGoal.x) - .5f, (int)(moveGoal.y) + .5f, -5);
+				}
+				else
+					invMoveGoal = moveGoal;
 			}
 		}
+
+		transform.position += new Vector3((moveGoal.x - invMoveGoal.x) * Time.deltaTime * speed, (moveGoal.y - invMoveGoal.y) * Time.deltaTime * speed, 0);
+
+		ghostCollisions(false);
 	}
 }

@@ -187,8 +187,7 @@ public class PacMaster : MonoBehaviour
 					invGoal = goal;
 			}
 		}
-
-		print(invGoal + ", " + goal);
+		
 		transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * speed, (goal.y - invGoal.y) * Time.deltaTime * speed, 0);
 	}
 
