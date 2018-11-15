@@ -121,7 +121,7 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] >= 1) && atGoal())
 		{
 			if (dir != 0)
 				transform.position = moveGoal;
@@ -142,7 +142,7 @@ public class Ghost : MonoBehaviour
 		if (dir == 2)
 			return true;
 		if (!((int)(moveGoal.y - .5f) + 1 > 31) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] >= 1) && atGoal())
 			return true;
 		return false;
 	}
@@ -164,7 +164,7 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] >= 1) && atGoal())
 		{
 			if (dir != 1)
 				transform.position = moveGoal;
@@ -184,7 +184,7 @@ public class Ghost : MonoBehaviour
 		if (dir == 3)
 			return true;
 		if (!((int)(moveGoal.x - .5f) + 1 > 27) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] >= 1) && atGoal())
 			return true;
 		return false;
 	}
@@ -206,7 +206,7 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] >= 1) && atGoal())
 		{
 			if (dir != 2)
 				transform.position = moveGoal;
@@ -226,7 +226,7 @@ public class Ghost : MonoBehaviour
 		if (dir == 0)
 			return true;
 		if (!((int)(moveGoal.y - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] >= 1) && atGoal())
 			return true;
 		return false;
 	}
@@ -248,7 +248,7 @@ public class Ghost : MonoBehaviour
 			return true;
 		}
 		else if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] >= 1) && atGoal())
 		{
 			if (dir != 3)
 				transform.position = moveGoal;
@@ -268,7 +268,7 @@ public class Ghost : MonoBehaviour
 		if (dir == 1)
 			return true;
 		if (!((int)(moveGoal.x - .5f) - 1 < 0) && ((moveGoal.y - .5f) % 1f == 0 && (moveGoal.x - .5f) % 1f == 0 &&
-			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1) && atGoal())
+			levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] >= 1) && atGoal())
 			return true;
 		return false;
 	}
@@ -336,8 +336,8 @@ public class Ghost : MonoBehaviour
 			if (dir == 0)
 			{
 				if ((int)(moveGoal.y - .5f) + 1 > 31 && (moveGoal.y - .5f) % 1f == 0)
-					moveGoal = new Vector3(moveGoal.x, 0.5f, 0);
-				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] == 1)
+					moveGoal = new Vector3(moveGoal.x, 0.5f, -5);
+				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) + 1] >= 1)
 				{
 					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
 					moveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + 1.5f, -5);
@@ -348,9 +348,9 @@ public class Ghost : MonoBehaviour
 			else if (dir == 1)
 			{
 				if ((int)(moveGoal.x - .5f) + 1 > 27 && (moveGoal.x - .5f) % 1f == 0)
-					moveGoal = new Vector3(0.5f, moveGoal.y, 0);
+					moveGoal = new Vector3(0.5f, moveGoal.y, -5);
 
-				if (levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] == 1)
+				if (levelRef[(int)(moveGoal.x - .5f) + 1, (int)(moveGoal.y - .5f)] >= 1)
 				{
 					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
 					moveGoal = new Vector3((int)(moveGoal.x) + 1.5f, (int)(moveGoal.y) + .5f, -5);
@@ -361,9 +361,9 @@ public class Ghost : MonoBehaviour
 			else if (dir == 2)
 			{
 				if ((int)(moveGoal.y - .5f) - 1 < 0 && (moveGoal.y - .5f) % 1f == 0)
-					moveGoal = new Vector3(moveGoal.x, 31.5f, 0);
+					moveGoal = new Vector3(moveGoal.x, 31.5f, -5);
 
-				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] == 1)
+				if (levelRef[(int)(moveGoal.x - .5f), (int)(moveGoal.y - .5f) - 1] >= 1)
 				{
 					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
 					moveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) - .5f, -5);
@@ -374,9 +374,9 @@ public class Ghost : MonoBehaviour
 			else
 			{
 				if ((int)(moveGoal.x - .5f) - 1 < 0 && (moveGoal.x - .5f) % 1f == 0)
-					moveGoal = new Vector3(27.5f, moveGoal.y, 0);
+					moveGoal = new Vector3(27.5f, moveGoal.y, -5);
 
-				if (levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] == 1)
+				if (levelRef[(int)(moveGoal.x - .5f) - 1, (int)(moveGoal.y - .5f)] >= 1)
 				{
 					invMoveGoal = new Vector3((int)(moveGoal.x) + .5f, (int)(moveGoal.y) + .5f, -5);
 					moveGoal = new Vector3((int)(moveGoal.x) - .5f, (int)(moveGoal.y) + .5f, -5);
