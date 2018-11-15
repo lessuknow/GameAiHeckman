@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostBrains : MonoBehaviour
 {
-
+    
     public enum phase { scatter, chase, run, leave, idle };
     private phase ps;
     private phase prev_phase;
@@ -58,7 +58,76 @@ public class GhostBrains : MonoBehaviour
         ps = phase.run;
         CancelInvoke();
 
-        DoScatter();
+        
+            if ((int)red.transform.position.x < (int)pac.transform.position.x)
+            {
+                red.setGoalLeft();
+            }
+            else if ((int)red.transform.position.x > (int)pac.transform.position.x)
+            {
+                red.setGoalRight();
+            }
+            else if ((int)red.transform.position.y > (int)pac.transform.position.y)
+            {
+                red.setGoalUp();
+            }
+            else
+            {
+                red.setGoalDown();
+            }
+        
+            if ((int)orange.transform.position.x < (int)pac.transform.position.x)
+            {
+                orange.setGoalLeft();
+            }
+            else if ((int)orange.transform.position.x > (int)pac.transform.position.x)
+            {
+                orange.setGoalRight();
+            }
+            else if ((int)orange.transform.position.y > (int)pac.transform.position.y)
+            {
+                orange.setGoalUp();
+            }
+            else
+            {
+                orange.setGoalDown();
+            }
+        
+            if ((int)pink.transform.position.x < (int)pac.transform.position.x)
+            {
+                pink.setGoalLeft();
+            }
+            else if ((int)pink.transform.position.x > (int)pac.transform.position.x)
+            {
+                pink.setGoalRight();
+            }
+            else if ((int)pink.transform.position.y > (int)pac.transform.position.y)
+            {
+                pink.setGoalUp();
+            }
+            else
+            {
+                pink.setGoalDown();
+            }
+        
+       
+            if ((int)purple.transform.position.x < (int)pac.transform.position.x)
+            {
+                purple.setGoalLeft();
+            }
+            else if ((int)purple.transform.position.x > (int)pac.transform.position.x)
+            {
+                purple.setGoalRight();
+            }
+            else if ((int)purple.transform.position.y > (int)pac.transform.position.y)
+            {
+                purple.setGoalUp();
+            }
+            else
+            {
+                purple.setGoalDown();
+            }
+        
     }
 
     private void StopRun()
@@ -132,10 +201,10 @@ public class GhostBrains : MonoBehaviour
 
         if (purple.atCrossroad())
         {
-            if (!purple.setGoalLeft())
+            if (!purple.setGoalRight())
             {
                 if (!purple.setGoalDown())
-                    if (!purple.setGoalRight())
+                    if (!purple.setGoalLeft())
                         purple.setGoalUp();
             }
         }
