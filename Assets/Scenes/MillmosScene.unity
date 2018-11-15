@@ -846,7 +846,13 @@ MonoBehaviour:
   ghostB: {fileID: 1428867777817012, guid: 8fdaf1b785c83a84298367dd55299d67, type: 2}
   ghostC: {fileID: 1659871393258922, guid: e7b1a8a5402ae2a4491d7caf254cb892, type: 2}
   ghostD: {fileID: 1725166000024170, guid: 801b7f96470ac3d4db0af747d826fc2e, type: 2}
+  gbGhostA: {fileID: 0}
+  gbGhostB: {fileID: 0}
+  gbGhostC: {fileID: 0}
+  gbGhostD: {fileID: 0}
   score: {fileID: 2100218968}
+  gb: {fileID: 0}
+  useGB: 0
 --- !u!1 &1670863342
 GameObject:
   m_ObjectHideFlags: 0
