@@ -14,6 +14,7 @@ public class Ghost : MonoBehaviour
 	private float rTime = 0;
 	private float rChange = 2f;
 	private int rDir = 0;
+    private bool passed_door = false;
 	protected GameObject[] ghosts;
 	public GameObject pacman;
 
@@ -25,26 +26,17 @@ public class Ghost : MonoBehaviour
 
 	public virtual void Update()
 	{
-		prep();
 
-		if (atGoal())
-		{
-			pathContinue();
-		}
-
-		ghostCollisions();
-
-		move();
 	}
 
-	protected void prep()
+	public void prep()
 	{
 		if (!levelSet)
 		{
 			levelSet = true;
 			levelRef = pl.levelArray;
 			invMoveGoal = transform.position;
-			moveGoal = new Vector3(transform.position.x + 1, transform.position.y, -5);
+			moveGoal = new Vector3(transform.position.x, transform.position.y, -5);
 		}
 	}
 
@@ -53,7 +45,7 @@ public class Ghost : MonoBehaviour
 		return dir;
 	}
 
-	protected bool atGoal()	//returns true if the ghost is centered on goal, and thus can change dimension of direction
+	public bool atGoal()	//returns true if the ghost is centered on goal, and thus can change dimension of direction
 	{
 		return Mathf.Abs(moveGoal.x - transform.position.x) < .1f && Mathf.Abs(moveGoal.y - transform.position.y) < .1f;
 	}
@@ -74,7 +66,7 @@ public class Ghost : MonoBehaviour
 		return paths > 2;
 	}
 
-	protected void pathContinue()
+	public void pathContinue()
 	{
 		if (dir == 0 && !canMoveUp())
 		{
@@ -371,7 +363,7 @@ public class Ghost : MonoBehaviour
 				else
 					invMoveGoal = moveGoal;
 			}
-			else
+			else if (dir == 3)
 			{
 				if ((int)(moveGoal.x - .5f) - 1 < 0 && (moveGoal.x - .5f) % 1f == 0)
 					moveGoal = new Vector3(27.5f, moveGoal.y, -5);
@@ -385,7 +377,12 @@ public class Ghost : MonoBehaviour
 					invMoveGoal = moveGoal;
 			}
 		}
-
+        if(!passed_door)
+            if(pl.tm.GetTile(pl.tm.WorldToCell(transform.position))&&
+                pl.tm.GetTile(pl.tm.WorldToCell(transform.position)).name == "Door")
+            {
+                passed_door = true;
+            }
 		transform.position += new Vector3((moveGoal.x - invMoveGoal.x) * Time.deltaTime * speed, (moveGoal.y - invMoveGoal.y) * Time.deltaTime * speed, 0);
 	}
 }
