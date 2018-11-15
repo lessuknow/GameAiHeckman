@@ -11,7 +11,10 @@ public class ParseLevel : MonoBehaviour {
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
 	public GameObject superPellet, pellet,heckman, ghostA, ghostB, ghostC, ghostD;
+    public GameObject gbGhostA, gbGhostB, gbGhostC, gbGhostD;
     public Score score;
+    public GhostBrains gb;
+    public bool useGB;
 
 	public int[,] levelArray = new int[28,30];
 
@@ -178,19 +181,43 @@ public class ParseLevel : MonoBehaviour {
                         GameObject g;
                         if (level.text[y * length + x + 1] == 'A')
                         {
-                            g =  GameObject.Instantiate(ghostA, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            if(!useGB)
+                                g =  GameObject.Instantiate(ghostA, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            else
+                            {
+                                g = GameObject.Instantiate(gbGhostA, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                                gb.purple = g.GetComponent<Ghost>();
+                            }
                         }
                         else if (level.text[y * length + x + 1] == 'B')
                         {
-                            g = GameObject.Instantiate(ghostB, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            if (!useGB)
+                                g = GameObject.Instantiate(ghostB, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            else
+                            {
+                                g = GameObject.Instantiate(gbGhostB, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                                gb.red = g.GetComponent<Ghost>();
+                            }
                         }
                         else if (level.text[y * length + x + 1] == 'C')
                         {
-                            g = GameObject.Instantiate(ghostC, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            if (!useGB)
+                                g = GameObject.Instantiate(ghostC, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            else
+                            {
+                                g = GameObject.Instantiate(gbGhostC, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                                gb.orange = g.GetComponent<Ghost>();
+                            }
                         }
                         else
                         {
-                            g = GameObject.Instantiate(ghostD, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            if (!useGB)
+                                g = GameObject.Instantiate(ghostD, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                            else
+                            {
+                                g = GameObject.Instantiate(gbGhostD, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
+                                gb.pink = g.GetComponent<Ghost>();
+                            }
                         }
 
                         g.GetComponent<Ghost>().pl = this;

@@ -10,9 +10,9 @@ W W W W W C1. W W W W C1  W W . C0W W W W . C0W W W W W
           W . W W W W C2  C3C2  C3W W W W . W           
           W . W W                     W W . W           
           W . W W   C0W W D D W W C1  W W . W           
-W W W W W C2. C3C2  W GA      GB  W   C3C2. C3W W W W W 
+W W W W W C2. C3C2  W GA        GBW   C3C2. C3W W W W W 
 <           .       W             W       .           > 
-W W W W W C1. C0C1  W GC      GD  W   C0C1. C0W W W W W 
+W W W W W C1. C0C1  W GC        GDW   C0C1. C0W W W W W 
           W . W W   C3W W W W W W C2  W W . W           
           W . W W           P         W W . W           
           W . W W   L0E0E0E0E0E0E0R0  W W . W           
