@@ -14,7 +14,7 @@ public class Ghost : MonoBehaviour
 	private float rTime = 0;
 	private float rChange = 2f;
 	private int rDir = 0;
-    private bool passed_door = false;
+    public bool passed_door = false;
 	protected GameObject[] ghosts;
 	public GameObject pacman;
 
@@ -34,7 +34,15 @@ public class Ghost : MonoBehaviour
 		if (!levelSet)
 		{
 			levelSet = true;
-			levelRef = pl.levelArray;
+			levelRef = new int[pl.levelArray.GetLength(0),pl.levelArray.GetLength(1)];
+            for(int i=0;i < pl.levelArray.GetLength(0);i++)
+            {
+                for(int j=0;j<pl.levelArray.GetLength(1);j++)
+                {
+                    levelRef[i, j] = pl.levelArray[i, j];
+                }
+            }
+
 			invMoveGoal = transform.position;
 			moveGoal = new Vector3(transform.position.x, transform.position.y, -5);
 		}
@@ -210,7 +218,7 @@ public class Ghost : MonoBehaviour
 
 	public bool canMoveDown()
 	{
-		for (int i = 0; i < ghosts.Length; i++)
+        for (int i = 0; i < ghosts.Length; i++)
 		{
 			if (Mathf.Abs(ghosts[i].transform.position.x - transform.position.x) < 1f && ghosts[i].transform.position.y - transform.position.y > -2f && ghosts[i].transform.position.y - transform.position.y < 0)
 				return false;
@@ -381,7 +389,10 @@ public class Ghost : MonoBehaviour
             if(pl.tm.GetTile(pl.tm.WorldToCell(transform.position))&&
                 pl.tm.GetTile(pl.tm.WorldToCell(transform.position)).name == "Door")
             {
+                print(levelRef[13, 18]);
                 passed_door = true;
+                levelRef[13, 18] = 0;
+                levelRef[14, 18] = 0;
             }
 		transform.position += new Vector3((moveGoal.x - invMoveGoal.x) * Time.deltaTime * speed, (moveGoal.y - invMoveGoal.y) * Time.deltaTime * speed, 0);
 	}

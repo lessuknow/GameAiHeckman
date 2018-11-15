@@ -14,6 +14,7 @@ public class GhostBrains : MonoBehaviour
     private void Start()
     {
         ps = phase.leave;
+        Invoke("SetScatter", 1.5f);
     }
 
 
@@ -64,22 +65,25 @@ public class GhostBrains : MonoBehaviour
 
     private void DoLeaveTop()
     {
-        if (!purple.setGoalUp())
-            purple.setGoalRight();
-
-        if (!red.setGoalUp())
-            red.setGoalLeft();
+        if(!purple.passed_door)
+            if (!purple.setGoalUp())
+                purple.setGoalRight();
+        if(!red.passed_door)
+            if (!red.setGoalUp())
+                red.setGoalLeft();
     }
 
   
 
     private void DoLeaveBottom()
     {
-        if (!orange.setGoalUp())
-            orange.setGoalRight();
+        if (!orange.passed_door)
+            if (!orange.setGoalUp())
+                orange.setGoalRight();
 
-        if (!pink.setGoalUp())
-            pink.setGoalLeft();
+        if (!pink.passed_door)
+            if (!pink.setGoalUp())
+                pink.setGoalLeft();
     }
 
     private void DoRun()

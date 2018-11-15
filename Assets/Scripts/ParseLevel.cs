@@ -153,6 +153,7 @@ public class ParseLevel : MonoBehaviour {
                     case 'D':
                         tm.SetTile(new Vector3Int(x / 2, (height - y), 0), door);
 						levelArray[x / 2, (height - y)] = 2;
+                        print((x / 2)+" "+(height));
 						break;
 
                     case 'W':
