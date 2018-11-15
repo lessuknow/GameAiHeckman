@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//If you hold left as you respawn you go through wall slol
 public class PacMaster : MonoBehaviour
 {
 	public GameObject pacSide;
@@ -12,13 +13,21 @@ public class PacMaster : MonoBehaviour
 	private int[,] levelRef;
 	private Vector3 goal;
 	private Vector3 invGoal;
+    private Vector3 initgoal, initinvgoal;
+    private int initdir;
 	public int dir = 1;
 	private float t = 0;
 	public float speed = .12f;
+    public int dots_eaten;
+    public bool is_super = false;
+    private Vector3 initPos;
+    private int point_combo = 0;
 
 	void Start ()
 	{
 		pacSide.transform.localPosition = new Vector3(0, 0, -5);
+        initPos = transform.localPosition;
+  
 	}
 
 	void Update()
@@ -30,8 +39,10 @@ public class PacMaster : MonoBehaviour
 			levelSet = true;
 			levelRef = pl.levelArray;
 			invGoal = transform.position;
-			goal = new Vector3(transform.position.x + 1, transform.position.y, 0);
-		}
+			goal = new Vector3(transform.position.x + 1, transform.position.y, 0); initgoal = goal;
+            initinvgoal = invGoal;
+            initdir = dir;
+        }
 
 		if (Mathf.Abs(goal.x - transform.position.x) < .1f && Mathf.Abs(goal.y - transform.position.y) < .1f)
 			nearGoal = true;
@@ -199,17 +210,53 @@ public class PacMaster : MonoBehaviour
 		transform.position += new Vector3((goal.x - invGoal.x) * Time.deltaTime * speed, (goal.y - invGoal.y) * Time.deltaTime * speed, 0);
 	}
 
+    private void UnSuper()
+    {
+        is_super = false;
+        point_combo = 0;
+    }
+
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Pellet")
 		{
             scoring.AddScore();
 			Destroy(collision.gameObject);
-		}
-		if (collision.tag == "Death")
+            dots_eaten++;
+        }
+        if (collision.tag == "SuperPellet")
+        {
+            scoring.AddScore();
+            Destroy(collision.gameObject);
+            dots_eaten++;
+            is_super = true;
+            point_combo = 100;
+            Invoke("UnSuper", 10f);
+        }
+        if (collision.tag == "Death")
 		{
-			Destroy(gameObject);
-            scoring.EndGame();
+            if(!is_super)
+            { 
+                if(scoring.Lives > 0)
+                {
+                    transform.localPosition = initPos;
+                    goal = initgoal ;
+                    invGoal = initinvgoal ;
+                    dir = initdir ;
+                    scoring.kill();
+                }
+                else
+                { 
+    			Destroy(gameObject);
+                scoring.EndGame();
+                }
+            }
+            else
+            {
+                collision.GetComponentInParent<Ghost>().Death();
+                scoring.AddScore(point_combo);
+                point_combo *= 2;
+            }
 		}
 	}
 }

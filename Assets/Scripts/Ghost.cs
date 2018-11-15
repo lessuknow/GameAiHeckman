@@ -17,6 +17,7 @@ public class Ghost : MonoBehaviour
     public bool passed_door = false;
 	protected GameObject[] ghosts;
 	public GameObject pacman;
+    private bool dead = false;
 
 	void Start()
 	{
@@ -57,6 +58,13 @@ public class Ghost : MonoBehaviour
 	{
 		return Mathf.Abs(moveGoal.x - transform.position.x) < .1f && Mathf.Abs(moveGoal.y - transform.position.y) < .1f;
 	}
+
+    public void Death()
+    {
+        dead = true;
+        GetComponentInChildren<BoxCollider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().sprite = null;
+    }
 
 	public bool atCrossroad()   //returns true if a turn can be made
 	{

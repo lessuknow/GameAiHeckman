@@ -11,6 +11,7 @@ public class ParseLevel : MonoBehaviour {
     public Tilemap tm;
     public Tile floor, wall, corner, edge, end, endleft, endright, door;
 	public GameObject superPellet, pellet,heckman, ghostA, ghostB, ghostC, ghostD;
+    private int dot_num = 0;
     public GameObject gbGhostA, gbGhostB, gbGhostC, gbGhostD;
     public Score score;
     public GhostBrains gb;
@@ -18,9 +19,14 @@ public class ParseLevel : MonoBehaviour {
 
 	public int[,] levelArray = new int[28,30];
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+
         LoadLevel();
+    }
+
+    // Use this for initialization
+    void Start () {
         score = (GameObject.Find("UI")).GetComponent<Score>();
     }
 
@@ -164,18 +170,21 @@ public class ParseLevel : MonoBehaviour {
 					case '.':
 						GameObject.Instantiate(pellet, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
 						levelArray[x / 2, (height - y)] = 1;
+                        dot_num++;
 						break;
 
 					case 'S':
 						GameObject.Instantiate(superPellet, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
 						levelArray[x / 2, (height - y)] = 1;
-						break;
+                        dot_num++;
+                        break;
 
 					case 'P':
                         GameObject p = GameObject.Instantiate(heckman, new Vector3(x / 2 + .5f, (height - y) + .5f, 0), new Quaternion());
                         p.GetComponent<PacMaster>().pl = this;
                         p.GetComponent<PacMaster>().scoring = score;
                         levelArray[x / 2, (height - y)] = 1;
+                        gb.pac = p.GetComponent<PacMaster>();
                         break;
 
                     case 'G':
@@ -234,5 +243,6 @@ public class ParseLevel : MonoBehaviour {
                 }
             }
         }
+        gb.dot_num = dot_num;
     }
 }

@@ -155,7 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
-  speed: 7
+  speed: 5
+  passed_door: 0
   pacman: {fileID: 1820403193917556, guid: add3fccf91c86fc4db5924264a0b53f4, type: 2}
 --- !u!212 &212842488593387108
 SpriteRenderer:

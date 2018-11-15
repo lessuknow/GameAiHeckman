@@ -9,6 +9,9 @@ public class Score : MonoBehaviour {
     int score = 0;
     public Text curScoreTxt, maxScoreTxt;
     public Text curScore, maxScore;
+    public Text textLife;
+    public int Lives = 3;
+    private int prevK = 0;
     public Button butn;
 
     public void Start()
@@ -27,7 +30,7 @@ public class Score : MonoBehaviour {
 
         maxScoreTxt.text += tmp;
 
-        PositionText();
+       // PositionText();
 
     }
 
@@ -49,6 +52,12 @@ public class Score : MonoBehaviour {
         }
 
         curScoreTxt.text += tmp;
+        textLife.text = Lives.ToString();
+    }
+
+    public void kill()
+    {
+        Lives--;
     }
 
     public void EndGame()
@@ -70,6 +79,19 @@ public class Score : MonoBehaviour {
     public void AddScore()
     {
         score += 1;
+        if(score - prevK >= 10000)
+        {
+            Lives++;
+            prevK += 10000;
+        }
     }
-
+    public void AddScore(int num)
+    {
+        score += num;
+        if (score - prevK >= 10000)
+        {
+            Lives++;
+            prevK += 10000;
+        }
+    }
 }

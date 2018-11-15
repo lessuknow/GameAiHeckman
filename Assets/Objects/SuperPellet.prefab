@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61972626501520696}
   m_Layer: 0
   m_Name: SuperPellet
-  m_TagString: Untagged
+  m_TagString: SuperPellet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
