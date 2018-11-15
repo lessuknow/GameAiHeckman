@@ -184,7 +184,8 @@ public class ParseLevel : MonoBehaviour {
                         p.GetComponent<PacMaster>().pl = this;
                         p.GetComponent<PacMaster>().scoring = score;
                         levelArray[x / 2, (height - y)] = 1;
-                        gb.pac = p.GetComponent<PacMaster>();
+						if(gb)
+						gb.pac = p.GetComponent<PacMaster>();
                         break;
 
                     case 'G':
@@ -243,6 +244,7 @@ public class ParseLevel : MonoBehaviour {
                 }
             }
         }
+		if(gb)
         gb.dot_num = dot_num;
     }
 }

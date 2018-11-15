@@ -13,16 +13,21 @@ public class Pinky : Ghost
 	private Vector3 startPosition;
 	public GameObject ghostBlue;
 	public GameObject ghostDead;
+	private Sprite spriteRef;
 
 	public override void Update()
 	{
 		prep();
 
 		if (time == 0)
+		{
 			startPosition = transform.position;
+			spriteRef = GetComponent<SpriteRenderer>().sprite;
+		}
 
 		if (state == (int)stateTypes.chasing)
 		{
+			GetComponent<SpriteRenderer>().sprite = spriteRef;
 			chasingLogic();
 			move();
 		}
@@ -33,6 +38,7 @@ public class Pinky : Ghost
 		}
 		else if (state == (int)stateTypes.wandering)
 		{
+			GetComponent<SpriteRenderer>().sprite = spriteRef;
 			wanderingLogic();
 			move();
 		}
@@ -44,7 +50,7 @@ public class Pinky : Ghost
 		else if (state == (int)stateTypes.locked)
 		{
 			ghostBlue.transform.position = transform.position + new Vector3(0, 0, 5);
-			if ((time >= unlockingTime && fleeTime == 0) || (time - fleeTime) >= 7)
+			if ((time >= unlockingTime && fleeTime == 0) || (time - fleeTime) >= 10.5f)
 				state = (int)stateTypes.unlocking;
 		}
 		else if (state == (int)stateTypes.locking)
@@ -52,6 +58,9 @@ public class Pinky : Ghost
 			lockingLogic();
 			move();
 		}
+
+		if (pacman.GetComponent<PacMaster>().is_super && state != (int)stateTypes.fleeing && state != (int)stateTypes.locking && state != (int)stateTypes.locked && state != (int)stateTypes.unlocking)
+			setFleeing();
 
 		time += Time.deltaTime;
 	}
@@ -264,7 +273,7 @@ public class Pinky : Ghost
 			goToGoal();
 		}
 
-		if (time - fleeTime > 5)
+		if (time - fleeTime > 7)
 		{
 			if (Mathf.FloorToInt(time * 5) % 2 == 0)
 				ghostBlue.transform.position = transform.position + new Vector3(0, 0, 5);
@@ -272,7 +281,15 @@ public class Pinky : Ghost
 				ghostBlue.transform.position = transform.position + new Vector3(0, 0, -5);
 		}
 
-		if (time - fleeTime > 7)
+		if (dead)
+		{
+			dead = false;
+			GetComponent<SpriteRenderer>().sprite = spriteRef;
+			setLocking();
+			return;
+		}
+
+		if (time - fleeTime > 10.5f)
 		{
 			state = (int)stateTypes.chasing;
 			ghostBlue.transform.position = transform.position + new Vector3(0, 0, 5);
@@ -282,6 +299,7 @@ public class Pinky : Ghost
 	void lockingLogic()
 	{
 		goal = startPosition;
+		print(startPosition);
 
 		if (atGoal() && !atCrossroad())
 		{
@@ -293,7 +311,17 @@ public class Pinky : Ghost
 		}
 
 		if (Vector3.Distance(transform.position, startPosition) < .05f)
+		{
+			speed = 7;
+			ghostDead.transform.position = transform.position + new Vector3(0, 0, 5);
 			state = (int)stateTypes.locked;
+		}
+		else if (time - fleeTime > 12f)
+		{
+			speed = 7;
+			ghostDead.transform.position = transform.position + new Vector3(0, 0, 5);
+			state = (int)stateTypes.chasing;
+		}
 	}
 
 	public void setFleeing()

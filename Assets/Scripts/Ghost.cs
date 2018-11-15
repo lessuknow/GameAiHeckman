@@ -17,7 +17,7 @@ public class Ghost : MonoBehaviour
     public bool passed_door = false;
 	protected GameObject[] ghosts;
 	public GameObject pacman;
-    private bool dead = false;
+    protected bool dead = false;
 
 	void Start()
 	{
