@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blinky : Ghost
+public class Inky : Ghost
 {
 	private enum stateTypes { locked, unlocking, chasing, fleeing, wandering, locking };
-	public int state = (int)stateTypes.unlocking;
+	public int state = (int)stateTypes.locked;
 	private float time = 0;
 	private float fleeTime = 0;
 	public float unlockingTime = 0;     //time at which ghost escapes confinement
@@ -13,10 +13,20 @@ public class Blinky : Ghost
 	private Vector3 startPosition;
 	public GameObject ghostBlue;
 	public GameObject ghostDead;
+	private GameObject blinky = null;
 
 	public override void Update()
 	{
 		prep();
+
+		if (blinky == null)
+		{
+			for (int i = 0; i < ghosts.Length; i++)
+			{
+				if (ghosts[i].GetComponent<Blinky>() != null)
+					blinky = ghosts[i];
+			}
+		}
 
 		if (time == 0)
 			startPosition = transform.position;
@@ -131,7 +141,20 @@ public class Blinky : Ghost
 
 	private void chasingLogic()
 	{
+		int pacmanDir = pacman.GetComponent<PacMaster>().dir;
+
 		goal = pacman.transform.position;
+
+		if (pacmanDir == 0)
+			goal += new Vector3(0, 3);
+		else if (pacmanDir == 1)
+			goal += new Vector3(3, 0);
+		else if (pacmanDir == 2)
+			goal += new Vector3(0, -3);
+		else if (pacmanDir == 3)
+			goal += new Vector3(-3, 0);
+
+		goal += goal - blinky.transform.position;
 
 		if (atGoal() && !atCrossroad())
 		{

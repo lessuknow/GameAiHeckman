@@ -216,11 +216,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
   speed: 7
+  passed_door: 0
   pacman: {fileID: 0}
   state: 1
   unlockingTime: 0
-  ghostBlue: {fileID: 0}
-  ghostDead: {fileID: 0}
+  ghostBlue: {fileID: 1267386530923960}
+  ghostDead: {fileID: 1087426962381884}
 --- !u!212 &212156212352297646
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -12,7 +12,7 @@ public class PacMaster : MonoBehaviour
 	private int[,] levelRef;
 	private Vector3 goal;
 	private Vector3 invGoal;
-	private int dir = 1;
+	public int dir = 1;
 	private float t = 0;
 	public float speed = .12f;
 
@@ -137,8 +137,12 @@ public class PacMaster : MonoBehaviour
 			}
 			else if (dir == 1)
 			{
-				if ((int)(goal.x - .5f) + 1 > 27 && (goal.x - .5f) % 1f == 0)
-					goal = new Vector3(0.5f, goal.y, 0);
+				if ((int)(goal.x - .5f) + 1 > 27)
+				{
+					transform.position = new Vector3(0.5f, goal.y, 0);
+					invGoal = transform.position;
+					goal = new Vector3(1.5f, goal.y, 0);
+				}
 
 				if (levelRef[(int)(goal.x - .5f) + 1, (int)(goal.y - .5f)] == 1)
 				{
@@ -171,8 +175,12 @@ public class PacMaster : MonoBehaviour
 			}
 			else
 			{
-				if ((int)(goal.x - .5f) - 1 < 0 && (goal.x - .5f) % 1f == 0)
-					goal = new Vector3(27.5f, goal.y, 0);
+				if ((int)(goal.x - .5f) - 1 < 0)
+				{
+					transform.position = new Vector3(27.5f, goal.y, 0);
+					invGoal = transform.position;
+					goal = new Vector3(26.5f, goal.y, 0);
+				}
 
 				if (levelRef[(int)(goal.x - .5f) - 1, (int)(goal.y - .5f)] == 1)
 				{

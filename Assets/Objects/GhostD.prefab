@@ -52,9 +52,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4076263351643228}
   - component: {fileID: 212789043796583428}
-  - component: {fileID: 114694833699973242}
   - component: {fileID: 61231961942314412}
   - component: {fileID: 50508250407073778}
+  - component: {fileID: 114993173985150260}
   m_Layer: 0
   m_Name: GhostD
   m_TagString: Ghost
@@ -203,7 +203,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
---- !u!114 &114694833699973242
+--- !u!114 &114993173985150260
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,12 +211,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1725166000024170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281acafc69a340d42830e0ee1b3782c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f6abdb09625d094c8c2eab6cc4b6fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
   speed: 7
+  passed_door: 0
   pacman: {fileID: 0}
+  state: 0
+  unlockingTime: 1
+  ghostBlue: {fileID: 1630652553828836}
+  ghostDead: {fileID: 1056376193074114}
 --- !u!212 &212789043796583428
 SpriteRenderer:
   m_ObjectHideFlags: 1

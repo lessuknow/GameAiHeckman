@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blinky : Ghost
+public class Clyde : Ghost
 {
 	private enum stateTypes { locked, unlocking, chasing, fleeing, wandering, locking };
-	public int state = (int)stateTypes.unlocking;
+	public int state = (int)stateTypes.locked;
 	private float time = 0;
 	private float fleeTime = 0;
 	public float unlockingTime = 0;     //time at which ghost escapes confinement
@@ -132,6 +132,9 @@ public class Blinky : Ghost
 	private void chasingLogic()
 	{
 		goal = pacman.transform.position;
+
+		if (Vector3.Distance(goal, transform.position) < 5)
+			goal = transform.position + (transform.position - goal);
 
 		if (atGoal() && !atCrossroad())
 		{

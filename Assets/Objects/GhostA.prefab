@@ -68,9 +68,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4417984890179846}
   - component: {fileID: 212842488593387108}
-  - component: {fileID: 114894568925395480}
   - component: {fileID: 61078414522579082}
   - component: {fileID: 50681512041646022}
+  - component: {fileID: 114052024281577302}
   m_Layer: 0
   m_Name: GhostA
   m_TagString: Ghost
@@ -203,7 +203,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.1}
   m_EdgeRadius: 0
---- !u!114 &114894568925395480
+--- !u!114 &114052024281577302
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,12 +211,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1656918670215944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281acafc69a340d42830e0ee1b3782c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 22eb6ccf7993272418c091796371b0e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pl: {fileID: 0}
   speed: 7
-  pacman: {fileID: 1820403193917556, guid: add3fccf91c86fc4db5924264a0b53f4, type: 2}
+  passed_door: 0
+  pacman: {fileID: 0}
+  state: 0
+  unlockingTime: 2
+  ghostBlue: {fileID: 1622726393260710}
+  ghostDead: {fileID: 1522815852565488}
 --- !u!212 &212061056110422222
 SpriteRenderer:
   m_ObjectHideFlags: 1
